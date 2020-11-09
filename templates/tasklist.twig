@@ -1,0 +1,68 @@
+{% if sort == 'asc' %}
+  {% set unsort = 'desc' %}
+{% else %}
+  {% set unsort = 'asc' %}
+{% endif %}
+<h3>Task List</h3>
+<div class="row">
+  <div class="col-sm">
+    <a class="page-link" href="#" onclick = "getTasks({{ curPage }}, 'username', '{{ unsort }}')">Name</a>
+  </div>
+  <div class="col-sm">
+    <a class="page-link" href="#" onclick = "getTasks({{ curPage }}, 'email', '{{ unsort }}')">E-Mail</a>
+  </div>
+  <div class="col-sm">
+    <a class="page-link text-muted">Description</a>
+  </div>
+  <div class="col-sm-2">
+    <a class="page-link" href="#" onclick = "getTasks({{ curPage }}, 'state', '{{ unsort }}')">Completed</a>
+  </div>
+</div>   
+{% for task in tasks %}
+<form>
+<div class="row">
+  <div class="col-sm">
+    {{ task.username }} 
+  </div>
+  <div class="col-sm">
+    {{ task.email }} 
+  </div>
+  <div class="col-sm" id="task-desc-{{ task.id }}">
+    {% if user %}
+    <input type="text" class="form-control mr-sm-2" value="{{ task.description }}">
+    {% else %}
+    {{ task.description }}
+    {% endif %}
+    {% if task.edited %}
+    <span class = "edited">(task edited)</span>
+    {% endif %}
+  </div>
+  <div class="col-sm-2">
+    {% if task.state %}
+    <input  id="task-complete-{{ task.id }}" class = "sm-2" type="checkbox" checked class="form-check-input" onclick="return false;">
+    {% else %}
+    <input id="task-complete-{{ task.id }}" class = "sm-2" type="checkbox" class="form-check-input" {% if user %}onclick="complete({{task.id}})"{% else %}disabled{% endif %}>
+    {% endif %}
+  </div>
+</div>   
+</form>
+{% endfor %}
+<nav aria-label="Page navigation example">
+  {% if maxPage > 1 %}
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#" onclick = "getTasks(1, '{{ orderBy }}', '{{ sort }}')">1</a></li>
+    {% if curPage == 1 %}
+    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+    {% else %}
+    <li class="page-item"><a class="page-link" href="#" onclick = "getTasks({{ curPage - 1}}, '{{ orderBy }}', '{{ sort }}')">Previous</a></li>
+    {% endif %}
+    <li class="page-item active"><a class="page-link" href="#">{{ curPage }}</a></li>
+    {% if curPage == maxPage %}
+    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+    {% else %}
+    <li class="page-item"><a class="page-link" href="#" onclick = "getTasks({{ curPage + 1}}, '{{ orderBy }}', '{{ sort }}')">Next</a></li>
+    {% endif %}
+    <li class="page-item"><a class="page-link" href="#" onclick = "getTasks({{ maxPage }}, '{{ orderBy }}', '{{ sort }}')">{{ maxPage }}</a></li>
+  </ul>
+  {% endif %}
+</nav>

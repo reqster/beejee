@@ -1,0 +1,53 @@
+{% extends "base.twig" %}
+
+{% block title %}Task List{% endblock %}
+
+{% block javascripts %} <script src="js/index.js"></script> {% endblock %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">BeeJee Task List</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Tasks <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+        </ul>
+        {% if user %}
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="logout()">Log out</button>
+        {% else %}
+        <div class="form-inline my-2 my-lg-0">
+          <input id="login-login" class="form-control mr-sm-2" type="text" placeholder="Login">
+          <input id="login-password" class="form-control mr-sm-2" type="password" placeholder="Password">
+          <button class="btn btn-outline-success my-2 my-sm-0" onclick="login()">Log in</button>
+        </div>
+        {% endif %}
+      </div>
+    </nav>
+<div class = "container" id = "tasklist">
+</div>
+<div class = "container" id = "addtask">
+<div class="row">
+  <div class="col-sm">
+    <input id = "task-new-name" class="form-control mr-sm-2" type="text" placeholder="Name">
+  </div>
+  <div class="col-sm">
+    <input id = "task-new-email" class="form-control mr-sm-2" type="text" placeholder="E-Mail">
+  </div>
+  <div class="col-sm">
+    <input id = "task-new-description" class="form-control mr-sm-2" type="text" placeholder="Description">
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick = "edit(0)">Add</button>
+  </div>
+</div>
+{% endblock %}
