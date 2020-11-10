@@ -39,6 +39,29 @@ function complete(id){
   });
 }
 
+function edDesc(id){
+  description = $("#task-desc-" + id).val();
+  errors = false;
+  if (!description){
+    errors = true;
+    errorPopup("Description cannot be empty");
+  }
+  
+  if (!errors){
+    $.post("edit/" + id, { description: description }, 
+      function( data ) {
+        if (!data.success){
+          errorPopup(data.errors.join("</br>"));
+        }
+        else{
+          successPopup("Task successfully edited");
+          getTasks();
+        }
+      },
+    "json")
+  }  
+}
+
 function popup(text, title){
   $('#popup-title').html(title);
   $('#popup-body').html(text);

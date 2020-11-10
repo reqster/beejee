@@ -5,6 +5,7 @@
 {% endif %}
 <h3>Task List</h3>
 <div class="row">
+{% if tasks|length %}
   <div class="col-sm">
     <a class="page-link" href="#" onclick = "getTasks({{ curPage }}, 'username', '{{ unsort }}')">Name</a>
   </div>
@@ -17,9 +18,11 @@
   <div class="col-sm-2">
     <a class="page-link" href="#" onclick = "getTasks({{ curPage }}, 'state', '{{ unsort }}')">Completed</a>
   </div>
-</div>   
+{% endif %}
+</div>
 {% for task in tasks %}
 <form>
+{% autoescape %}
 <div class="row">
   <div class="col-sm">
     {{ task.username }} 
@@ -27,9 +30,9 @@
   <div class="col-sm">
     {{ task.email }} 
   </div>
-  <div class="col-sm" id="task-desc-{{ task.id }}">
+  <div class="col-sm">
     {% if user %}
-    <input type="text" class="form-control mr-sm-2" value="{{ task.description }}">
+    <input type="text" id="task-desc-{{ task.id }}" class="form-control mr-sm-2" value="{{ task.description }}" onchange="edDesc({{ task.id }})">
     {% else %}
     {{ task.description }}
     {% endif %}
@@ -44,7 +47,8 @@
     <input id="task-complete-{{ task.id }}" class = "sm-2" type="checkbox" class="form-check-input" {% if user %}onclick="complete({{task.id}})"{% else %}disabled{% endif %}>
     {% endif %}
   </div>
-</div>   
+</div>  
+{% endautoescape %} 
 </form>
 {% endfor %}
 <nav aria-label="Page navigation example">

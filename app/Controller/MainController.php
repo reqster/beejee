@@ -55,18 +55,22 @@ class MainController extends Controller
         $username = $_POST['username'];
         $email = $_POST['email'];
         $description = $_POST['description'];
-        if ($id !== 0)
-            $state = $_POST['state'];
-        if (!$username || !$email || !$description){
-            $success = false;
-            $errors[] = 'All fields must be filled';            
+        if ($id == 0){
+            if ((!$username || !$email || !$description)){
+                $success = false;
+                $errors[] = 'All fields must be filled';            
+            }
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+                $success = false;
+                $errors[] = 'E-Mail address is not valid';
+            }
         }
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
-            $success = false;
-            $errors[] = 'E-Mail address is not valid';
+        if ($success){
+            if ($id == 0)
+                $this->taskModel->add(['username' => $username, 'email' => $email, 'description' => $description]);
+            else
+                $this->taskModel->edit($id, ['description' => $description]);
         }
-        if ($id == 0)
-            $this->taskModel->add(['username' => $username, 'email' => $email, 'description' => 'description']);
         echo json_encode(['success' => $success, 'errors' => $errors]);
     }
 }
